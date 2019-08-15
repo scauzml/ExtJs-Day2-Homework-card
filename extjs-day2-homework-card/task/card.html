@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="../ext-3.3.0/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-3.3.0/ext-all.js"></script>
+    <link rel="stylesheet" type="text/css" href="../ext-3.3.0/resources/css/ext-all.css" />
+    <title>Document</title>
+    <script>
+        Ext.onReady(function () {
+            var navHandler = function (direction) {
+                var card = Ext.getCmp("wizard").layout;
+                var pre = Ext.getCmp("move-prev");
+                var next = Ext.getCmp("move-next");
+                var activeId = card.activeItem.id;
+                if (activeId === 'c-0') {
+                    if (direction == 1) {
+                        card.setActiveItem(1);
+                        pre.setDisabled(false);
+                    }
+                } else if (activeId === "c-1") {
+                    if (direction == -1) {
+                        card.setActiveItem(0);
+                        pre.setDisabled(true);
+                    } else {
+                        next.setText('submit');
+                        card.setActiveItem(2);
+                        next.setDisabled(false);
+                        setCardValue();
+                    }
+                } else if (activeId === "c-2") {
+                    if (direction == -1) {
+                        next.setText('next');
+                        card.setActiveItem(1);
+
+                    } else {
+                         Ext.Msg.alert("Congratulation");
+                    }
+                }
+
+
+            };
+
+            // var radiogroup = new Ext.form.RadioGroup({
+            //     fieldLabel: 'Q1:番茄酱属于哪种垃圾？（单选）',
+            //     items: [{
+            //             name: 'Q1',
+            //             inputValue: '湿垃圾',
+            //             boxLabel: '湿垃圾',
+            //         }, {
+            //             name: 'Q1',
+            //             inputValue: '干垃圾',
+            //             boxLabel: '干垃圾',
+            //         },
+            //         {
+            //             name: 'Q1',
+            //             inputValue: '有害垃圾',
+            //             boxLabel: '有害垃圾',
+            //         },
+            //         {
+            //             name: 'Q1',
+            //             inputValue: '可回收物',
+            //             boxLabel: '可回收物',
+            //         },
+            //     ]
+            // });
+
+            var card = new Ext.Panel({
+                title: 'question',
+                id: 'wizard',
+                layout: 'card',
+                style:'position:relative;top:100px;left:500px;',
+                width: 400,
+                height:800,
+                activeItem: 0, // make sure the active item is set on the container config!
+                bodyStyle: 'padding:15px',
+                defaults: {
+                    // applied to each contained panel
+                    border: false
+                },
+                // just an example of one possible navigation scheme, using buttons
+                bbar: [{
+                        id: 'move-prev',
+                        text: 'Back',
+                        handler: navHandler.createDelegate(this, [-1]),
+                        disabled: true
+                    },
+                    '->', // greedy spacer so that the buttons are aligned to each side
+                    {
+                        id: 'move-next',
+                        text: 'Next',
+                        handler: navHandler.createDelegate(this, [1])
+                    }
+                ],
+                // the panels (or "cards") within the layout
+                items: [{
+                        id: 'c-0',
+                        height: 800,
+                        name: 'Q1',
+                        width: 400,
+                        xtype: 'fieldset',
+                        defaultType: 'radio',
+                        
+                        items: [{
+                                xtype: 'label',
+                                html: '<h1>Q1: 番茄酱属于以下哪种垃圾？（单选）</h1>',
+                            },
+                            {
+                               
+                                name: 'Q1',
+                                inputValue: '湿垃圾',
+                                boxLabel: '湿垃圾',
+                                cls:'left'
+                            }, {
+                                name: 'Q1',
+                                inputValue: '干垃圾',
+                                boxLabel: '干垃圾',
+                            },
+                            {
+                                name: 'Q1',
+                                inputValue: '有害垃圾',
+                                boxLabel: '有害垃圾',
+                            },
+                            {
+                                name: 'Q1',
+                                inputValue: '可回收物',
+                                boxLabel: '可回收物',
+                            },
+                        ]
+                    }, {
+                        id: 'c-1',
+                        height: 800,
+                        name: 'Q50',
+                        width: 400,
+                        xtype: 'fieldset',
+                        defaultType: 'checkbox',
+                        items: [{
+                                xtype: 'label',
+                                html: '<h1>Q50: 王大叔出门遛狗后，哪些是正确处理够粑粑的方法？（多选）</h1>',
+                            },
+                            {
+
+                                inputValue: '把粑粑用报纸包好带回家冲掉',
+                                boxLabel: '把粑粑用报纸包好带回家冲掉',
+                            }, {
+
+                                inputValue: '受污染的报纸按有害垃圾处理',
+                                boxLabel: '受污染的报纸按有害垃圾处理',
+                            },
+                            {
+
+                                inputValue: '没有受污染的报纸按可回收垃圾处理',
+                                boxLabel: '没有受污染的报纸按可回收垃圾处理',
+                            },
+                            {
+
+                                inputValue: '受污染的报纸浸水后当湿垃圾处理',
+                                boxLabel: '受污染的报纸浸水后当湿垃圾处理',
+                            },
+                        ]
+                    },
+
+                    {
+                        id: 'c-2',
+                        xtype: 'form',
+                        defaultType: 'textarea',
+                        title: '选择的结果为：',
+                        frame: true,
+                        width: 500,
+
+                        items: [{
+                            
+                            width: 300,
+                            height: 300,
+                            style:'position:relative;left:-78px;',
+                            id: 'result',                          
+                            preventScrollbars: true,                                            
+                        }],
+                        
+
+                    }
+                ]
+            });
+
+            var view = new Ext.Viewport({
+                width:500,
+                items: [
+                    card
+                ]
+            });
+
+            var setCardValue = function () {
+                var q1 = '';
+                var value = Ext.getCmp('c-0');
+                var items = value.items.items;
+                var radio = items.filter(e => e.checked)
+                if (radio.length > 0) {
+                    q1 += Ext.getCmp('c-0').name + ": \n";
+                    q1 += " "+radio[0].inputValue + "\n";
+                }
+                var value2 = Ext.getCmp('c-1').items.items;
+                var checkbox = value2.filter(e => e.checked);
+                if (checkbox.length > 0) {
+                    q1 += Ext.getCmp('c-1').name + ": \n";
+                    checkbox.map((element,index,array) => {
+                        q1 +=" "+(index+1)+"."+element.inputValue + "\n";
+                    });
+                }
+                Ext.getCmp('result').setValue(q1);
+            }
+        })
+    </script>
+    <style>
+    .x-form-check-wrap{
+       position: relative;
+       left: -83px;
+    }
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
